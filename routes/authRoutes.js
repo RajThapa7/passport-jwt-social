@@ -1,8 +1,9 @@
-var express = require("express");
-var passport = require("passport");
+const express = require("express");
+const passport = require("passport");
 const jwt = require("jwt-simple");
+const { login, register } = require("../controllers/accountControllers");
 
-var router = express.Router();
+const router = express.Router();
 
 router.get("/login/facebook", passport.authenticate("facebook"));
 
@@ -53,5 +54,16 @@ router.get(
     res.redirect(process.env.CLIENT_URL1);
   }
 );
+
+//local
+router.post(
+  "/login",
+  passport.authenticate("local", {
+    session: false,
+  }),
+  login
+);
+
+router.post("/register", register);
 
 module.exports = router;
